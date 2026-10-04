@@ -15,3 +15,8 @@ npm-debug.log*
 brag-output*/
 Football/
 .impeccable/
+
+# Every env file stays local (the Vercel CLI keeps a token in .env.local),
+# except the documented template.
+.env*
+!.env.example
