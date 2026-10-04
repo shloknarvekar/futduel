@@ -1,0 +1,1727 @@
+@import "tailwindcss";
+
+/* `dark:` follows the .dark class on <html> (or any subtree), not the OS. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ============================================================================
+   FutDuel — design tokens
+
+   One theme, three layers, one direction of dependency:
+
+   1. The semantic theme (below, verbatim): black, white and one blue-violet,
+      with a light :root and a .dark override. Every colour on the site
+      resolves to these values.
+   2. `@theme inline` exposes them to Tailwind (bg-background, text-primary…).
+   3. The FutDuel layer names the few things a football game needs that a UI
+      theme does not: a home side and an away side, card metals, rating bands.
+      Everything generic in it is *derived* from layer 1 (no colour of its
+      own), so the older names the components still use (ink, surface, line…)
+      cannot drift from the theme.
+
+   Physical objects keep their own material in both modes: the wheel, the
+   collectible cards and the pitch are dark things, the way a printed card is
+   the same card on a white desk. They take the .dark values locally.
+   ========================================================================== */
+
+:root {
+  --background: oklch(0.9851 0 0);
+  --foreground: oklch(0 0 0);
+  --card: oklch(1.00 0 267.51);
+  --card-foreground: oklch(0.2103 0 267.51);
+  --popover: oklch(1.00 0 0);
+  --popover-foreground: oklch(0 0 0);
+  --primary: oklch(0.5144 0.1605 267.44);
+  --primary-foreground: oklch(0.97 0.014 254.604);
+  --secondary: oklch(0.94 0 0);
+  --secondary-foreground: oklch(0.25 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.44 0 0);
+  --accent: oklch(0.9214 0.0248 257.65);
+  --accent-foreground: oklch(0.2571 0.1161 272.24);
+  --destructive: oklch(0.58 0.22 27);
+  --destructive-foreground: oklch(0.97 0.014 254.604);
+  --border: oklch(0.92 0 0);
+  --input: oklch(0.94 0 0);
+  --ring: oklch(0.5144 0.1605 267.44);
+  --chart-1: oklch(0.9214 0.0248 257.65);
+  --chart-2: oklch(0.7597 0.0804 267.01);
+  --chart-3: oklch(0.6083 0.1247 272.72);
+  --chart-4: oklch(0.5144 0.1605 267.44);
+  --chart-5: oklch(0.2571 0.1161 272.24);
+  --sidebar: oklch(1.00 0 267.51);
+  --sidebar-foreground: oklch(0 0 0);
+  --sidebar-primary: oklch(0.5144 0.1605 267.44);
+  --sidebar-primary-foreground: oklch(0.97 0.014 254.604);
+  --sidebar-accent: oklch(0.9214 0.0248 257.65);
+  --sidebar-accent-foreground: oklch(0.2571 0.1161 272.24);
+  --sidebar-border: oklch(0.92 0 0);
+  --sidebar-ring: oklch(0.5144 0.1605 267.44);
+
+  /* The named families, led by the self-hosted faces next/font loads for
+     them (a family name alone only works where it is installed). */
+  --font-sans: var(--font-geist), Geist, sans-serif;
+  --font-serif: var(--font-noto-serif-georgian), Noto Serif Georgian, ui-serif, serif;
+  --font-mono: var(--font-geist-mono), Geist Mono, monospace;
+
+  --radius: 0.5rem;
+
+  --shadow-color: oklch(0.2571 0.1161 272.24);
+  --shadow-opacity: 0.15;
+  --shadow-blur: 3px;
+  --shadow-spread: 0px;
+  --shadow-offset-x: 0.25px;
+  --shadow-offset-y: 1px;
+
+  --letter-spacing: 0em;
+  --spacing: 0.25rem;
+}
+
+.dark {
+  --background: oklch(0 0 0);
+  --foreground: oklch(1.00 0 0);
+  --card: oklch(0.2103 0 267.51);
+  --card-foreground: oklch(0.9461 0 0);
+  --popover: oklch(0.2103 0 267.51);
+  --popover-foreground: oklch(1.00 0 0);
+  --primary: oklch(0.5144 0.1605 267.44);
+  --primary-foreground: oklch(0.97 0.014 254.604);
+  --secondary: oklch(0.25 0 0);
+  --secondary-foreground: oklch(0.94 0 0);
+  --muted: oklch(0.23 0 0);
+  --muted-foreground: oklch(0.72 0 0);
+  --accent: oklch(0.32 0 0);
+  --accent-foreground: oklch(0.9214 0.0248 257.65);
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.97 0.014 254.604);
+  --border: oklch(0.26 0 0);
+  --input: oklch(0.32 0 0);
+  --ring: oklch(0.5144 0.1605 267.44);
+  --chart-1: oklch(0.9214 0.0248 257.65);
+  --chart-2: oklch(0.7597 0.0804 267.01);
+  --chart-3: oklch(0.6083 0.1247 272.72);
+  --chart-4: oklch(0.5144 0.1605 267.44);
+  --chart-5: oklch(0.2571 0.1161 272.24);
+  --sidebar: oklch(0.2103 0 267.51);
+  --sidebar-foreground: oklch(1.00 0 0);
+  --sidebar-primary: oklch(0.5144 0.1605 267.44);
+  --sidebar-primary-foreground: oklch(0.97 0.014 254.604);
+  --sidebar-accent: oklch(0.32 0 0);
+  --sidebar-accent-foreground: oklch(0.9214 0.0248 257.65);
+  --sidebar-border: oklch(0.26 0 0);
+  --sidebar-ring: oklch(0.5144 0.1605 267.44);
+
+  --font-sans: var(--font-geist), Geist, sans-serif;
+  --font-serif: var(--font-noto-serif-georgian), Noto Serif Georgian, ui-serif, serif;
+  --font-mono: var(--font-geist-mono), Geist Mono, monospace;
+  --radius: 0.5rem;
+  --shadow-color: oklch(0.2571 0.1161 272.24);
+  --shadow-opacity: 0.15;
+  --shadow-blur: 3px;
+  --shadow-spread: 0px;
+  --shadow-offset-x: 0.25px;
+  --shadow-offset-y: 1px;
+}
+
+/* Dark objects on any page. The same values as .dark, applied locally. The
+   row thumbnail is one: kit art under a dark scrim, whose rating and season
+   read white in both themes rather than following the page to black. */
+.fd-card,
+.fd-wheel,
+.pitch-turf,
+.fd-row__art {
+  --background: oklch(0 0 0);
+  --foreground: oklch(1.00 0 0);
+  --card: oklch(0.2103 0 267.51);
+  --card-foreground: oklch(0.9461 0 0);
+  --secondary: oklch(0.25 0 0);
+  --secondary-foreground: oklch(0.94 0 0);
+  --muted: oklch(0.23 0 0);
+  --muted-foreground: oklch(0.72 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(0.26 0 0);
+  --input: oklch(0.32 0 0);
+  color-scheme: dark;
+}
+
+/* Composite shadows built from the theme's shadow primitives. */
+:root,
+.dark {
+  --shadow-2xs: var(--shadow-offset-x) var(--shadow-offset-y) var(--shadow-blur) var(--shadow-spread) color-mix(in oklab, var(--shadow-color) calc(var(--shadow-opacity) * 50%), transparent);
+  --shadow-xs: var(--shadow-offset-x) var(--shadow-offset-y) var(--shadow-blur) var(--shadow-spread) color-mix(in oklab, var(--shadow-color) calc(var(--shadow-opacity) * 50%), transparent);
+  --shadow-sm: var(--shadow-offset-x) var(--shadow-offset-y) var(--shadow-blur) var(--shadow-spread) color-mix(in oklab, var(--shadow-color) calc(var(--shadow-opacity) * 100%), transparent), var(--shadow-offset-x) 1px 2px -1px color-mix(in oklab, var(--shadow-color) calc(var(--shadow-opacity) * 100%), transparent);
+  --shadow: var(--shadow-sm);
+  --shadow-md: var(--shadow-offset-x) var(--shadow-offset-y) var(--shadow-blur) var(--shadow-spread) color-mix(in oklab, var(--shadow-color) calc(var(--shadow-opacity) * 100%), transparent), var(--shadow-offset-x) 2px 4px -1px color-mix(in oklab, var(--shadow-color) calc(var(--shadow-opacity) * 100%), transparent);
+  --shadow-lg: var(--shadow-offset-x) var(--shadow-offset-y) var(--shadow-blur) var(--shadow-spread) color-mix(in oklab, var(--shadow-color) calc(var(--shadow-opacity) * 100%), transparent), var(--shadow-offset-x) 4px 6px -1px color-mix(in oklab, var(--shadow-color) calc(var(--shadow-opacity) * 100%), transparent);
+  --shadow-xl: var(--shadow-offset-x) var(--shadow-offset-y) var(--shadow-blur) var(--shadow-spread) color-mix(in oklab, var(--shadow-color) calc(var(--shadow-opacity) * 100%), transparent), var(--shadow-offset-x) 8px 10px -1px color-mix(in oklab, var(--shadow-color) calc(var(--shadow-opacity) * 100%), transparent);
+  --shadow-2xl: var(--shadow-offset-x) var(--shadow-offset-y) var(--shadow-blur) var(--shadow-spread) color-mix(in oklab, var(--shadow-color) calc(var(--shadow-opacity) * 250%), transparent);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-mono);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --shadow-2xs: var(--shadow-2xs);
+  --shadow-xs: var(--shadow-xs);
+  --shadow-sm: var(--shadow-sm);
+  --shadow: var(--shadow);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
+  --shadow-2xl: var(--shadow-2xl);
+  --shadow-lift: var(--fd-shadow-lift);
+  --shadow-deep: var(--fd-shadow-deep);
+
+  --tracking-normal: var(--letter-spacing);
+}
+
+/* FutDuel's own type roles and motion. These do not change between modes. */
+@theme {
+  /* Broadcast display face and condensed labels: the football half of the
+     type system. Body copy is the theme's Geist. */
+  --font-display: var(--font-anton), "Arial Narrow", system-ui, sans-serif;
+  --font-condensed: var(--font-barlow-condensed), "Arial Narrow", sans-serif;
+
+  --text-2xs: 0.6875rem;
+  --text-2xs--line-height: 1rem;
+
+  --radius-card: calc(0.5rem - 2px);
+  --radius-pill: 999px;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-sharp: cubic-bezier(0.55, 0, 1, 0.45);
+  /* Exponential ease-out for anything that should feel weighted and settle
+     quickly. Real objects decelerate, they do not bounce past their mark. */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --animate-shimmer: shimmer 1.6s linear infinite;
+  --animate-pulse-ring: pulse-ring 2.4s var(--ease-out-soft) infinite;
+  --animate-ticker: ticker 40s linear infinite;
+}
+
+/* ----------------------------------------------------------------------------
+   The FutDuel layer
+
+   Derived tokens are declared on every scope that can change the theme, so a
+   .dark subtree recomputes them from its own values.
+   -------------------------------------------------------------------------- */
+:root,
+.dark,
+.fd-card,
+.fd-wheel,
+.pitch-turf,
+.fd-row__art {
+  /* Ground and elevation. In light mode elevation is carried by borders and
+     shadow; the ramp is deliberately shallow. */
+  --color-void: var(--background);
+  --color-surface: color-mix(in oklab, var(--card) 40%, var(--background));
+  --color-surface-2: color-mix(in oklab, var(--card) 70%, var(--background));
+  --color-surface-3: var(--card);
+  --color-surface-4: color-mix(in oklab, var(--card) 88%, var(--foreground));
+
+  --color-line: var(--border);
+  --color-line-strong: color-mix(in oklab, var(--border) 86%, var(--foreground));
+
+  /* Text, strongest to quietest. The quietest still clears 4.5:1 on the
+     ground and on cards in both modes. */
+  --color-ink: var(--foreground);
+  --color-ink-soft: color-mix(in oklab, var(--foreground) 55%, var(--muted-foreground));
+  --color-ink-muted: var(--muted-foreground);
+  --color-ink-faint: color-mix(in oklab, var(--muted-foreground) 85%, var(--background));
+
+  --color-danger: var(--destructive);
+  /* Ink on a rating-band or achievement chip. The bands are dark on a light
+     ground and light on a dark one, so the ground colour is always the
+     readable ink on them. */
+  --color-on-tier: var(--background);
+
+  /* The away side is carried in neutral ink against the home side's violet:
+     the opponent, not a second brand colour. */
+  --color-away: var(--secondary-foreground);
+  --color-away-deep: color-mix(in oklab, var(--secondary-foreground) 45%, var(--background));
+  --color-on-away: var(--secondary);
+
+  /* Card classification. Metal, so the hierarchy reads without a legend:
+     matte standard, silver Hero, gold Icon. The same metal in both modes. */
+  --color-icon: #ffc24b;
+  --color-icon-bright: #ffe2a6;
+  --color-icon-deep: #8a5a14;
+  --color-hero: #b7c6cf;
+  --color-hero-bright: #e9f0f4;
+  --color-hero-deep: #4e5d67;
+  --color-archive: #c9b48e;
+}
+
+/* Light ground. */
+:root {
+  /* The home side, and the brand accent wherever it is ink or a stroke. */
+  --color-home: var(--primary);
+  --color-home-deep: var(--chart-5);
+  --color-on-home: var(--primary-foreground);
+  --color-on-danger: var(--destructive-foreground);
+
+  /* Signal colours darkened until they read as text on white. */
+  --color-gold: oklch(0.52 0.11 72);
+  --color-warn: oklch(0.52 0.13 50);
+  --color-info: oklch(0.5 0.12 245);
+  --color-icon-ink: oklch(0.5 0.1 70);
+  --color-hero-ink: oklch(0.42 0.02 230);
+
+  /* Rating bands. None borrows the home violet or a card metal. */
+  --color-tier-common: var(--muted-foreground);
+  --color-tier-rare: oklch(0.48 0.05 235);
+  --color-tier-epic: oklch(0.5 0.17 350);
+  --color-tier-world: oklch(0.34 0.03 75);
+
+  --fd-shadow-lift: 0 18px 40px -28px color-mix(in oklab, var(--shadow-color) 42%, transparent);
+  --fd-shadow-deep: 0 32px 70px -40px color-mix(in oklab, var(--shadow-color) 55%, transparent);
+}
+
+/* Dark ground, and the dark objects. */
+.dark,
+.fd-card,
+.fd-wheel,
+.pitch-turf,
+.fd-row__art {
+  /* --primary is 3.4:1 on black: enough for a stroke, not for small text.
+     On a dark ground the side colour steps up to chart-3. */
+  --color-home: var(--chart-3);
+  --color-home-deep: var(--primary);
+  --color-on-home: var(--background);
+  /* The destructive foreground is under 3:1 on the dark destructive fill. */
+  --color-on-danger: var(--background);
+
+  --color-gold: #ffc24b;
+  --color-warn: #ffab3d;
+  --color-info: oklch(0.78 0.09 245);
+  --color-icon-ink: var(--color-icon-bright);
+  --color-hero-ink: var(--color-hero-bright);
+
+  --color-tier-common: oklch(0.66 0 0);
+  --color-tier-rare: oklch(0.78 0.035 235);
+  --color-tier-epic: oklch(0.76 0.13 350);
+  --color-tier-world: #fbf5e6;
+
+  --fd-shadow-lift: 0 18px 44px -28px rgb(0 0 0 / 0.95);
+  --fd-shadow-deep: 0 32px 80px -40px rgb(0 0 0 / 1);
+}
+
+@keyframes shimmer {
+  0% { background-position: -180% 0; }
+  100% { background-position: 180% 0; }
+}
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-home) 45%, transparent); }
+  70% { box-shadow: 0 0 0 22px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+@keyframes ticker {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+@keyframes stage-in {
+  from { opacity: 0; transform: translate3d(0, 14px, 0); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes rise-in {
+  from { opacity: 0; transform: translate3d(0, 22px, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+@layer base {
+  * { border-color: var(--color-border); }
+
+  html {
+    color-scheme: light;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  html.dark { color-scheme: dark; }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    letter-spacing: var(--tracking-normal);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  /* One floodlight from above, in the brand violet, over a flat ground. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background:
+      radial-gradient(120% 60% at 50% -12%, color-mix(in oklab, var(--primary) 8%, transparent), transparent 60%),
+      var(--background);
+  }
+
+  /* Grain stops large flat fields banding on cheap panels. */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27140%27 height=%27140%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.85%27 numOctaves=%273%27/%3E%3C/filter%3E%3Crect width=%27140%27 height=%27140%27 filter=%27url(%23n)%27/%3E%3C/svg%3E");
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 0.9;
+    text-transform: uppercase;
+  }
+
+  .tnum, table, time, output { font-variant-numeric: tabular-nums; }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: var(--primary);
+    color: var(--primary-foreground);
+  }
+
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--background); }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-line-strong);
+    border: 2px solid var(--background);
+  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted-foreground); }
+
+  [hidden] { display: none !important; }
+}
+
+
+/* ============================================================================
+   Type utilities
+   ========================================================================== */
+
+/* Small, wide, condensed label. Connective tissue of the whole product. */
+@utility kicker {
+  font-family: var(--font-condensed);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+/* Broadcast-weight statistic. */
+@utility stat-figure {
+  font-family: var(--font-display);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  line-height: 0.85;
+}
+
+/* Condensed metadata: shirt numbers, positions, tags. */
+@utility meta {
+  font-family: var(--font-condensed);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* The oversized word behind a section that gives it scale. Decorative only,
+   so it is always aria-hidden at the call site. */
+@utility ghost-type {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: -0.04em;
+  line-height: 0.78;
+  color: transparent;
+  -webkit-text-stroke: 1px color-mix(in oklab, var(--color-ink) 8%, transparent);
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ============================================================================
+   Surfaces
+   ========================================================================== */
+
+/* The workhorse card. Squared corners and a lit top edge rather than a pill —
+   closer to a broadcast lower-third than a SaaS panel. */
+@utility panel {
+  position: relative;
+  background: linear-gradient(180deg, var(--color-surface-2) 0%, var(--color-surface) 100%);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--fd-shadow-lift);
+}
+
+/* A card that reads as a piece of content rather than a container. */
+@utility slab {
+  position: relative;
+  background: linear-gradient(180deg, var(--color-surface-3), var(--color-surface));
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-card);
+  box-shadow: var(--fd-shadow-lift);
+}
+
+@utility hairline {
+  background-image: linear-gradient(90deg, transparent, var(--color-line-strong) 18%, var(--color-line-strong) 82%, transparent);
+  height: 1px;
+}
+
+/* Broadcast pitch: mown stripes and a lit centre. A dark object in both
+   modes, lit by the same violet floodlight as everything else. */
+@utility pitch-turf {
+  background-color: oklch(0.17 0.008 270);
+  background-image:
+    repeating-linear-gradient(180deg, rgb(255 255 255 / 0.03) 0px, rgb(255 255 255 / 0.03) 40px, transparent 40px, transparent 80px),
+    radial-gradient(120% 90% at 50% 45%, color-mix(in oklab, var(--primary) 18%, transparent), transparent 70%);
+}
+
+@utility shimmer {
+  background: linear-gradient(90deg, var(--color-surface-2) 8%, var(--color-surface-3) 22%, var(--color-surface-2) 36%);
+  background-size: 220% 100%;
+  animation: var(--animate-shimmer);
+}
+
+/* ============================================================================
+   Motion utilities
+   ========================================================================== */
+
+@utility stage-enter {
+  animation: stage-in 340ms var(--ease-out-soft) both;
+}
+
+@utility rise-enter {
+  animation: rise-in 520ms var(--ease-out-soft) both;
+}
+
+/* The wheel rotor.
+
+   Driven by a CSS transition rather than a JavaScript tween so the spin runs
+   on the compositor and cannot desynchronise from game state when
+   requestAnimationFrame is throttled. The easing dips slightly negative at the
+   start, which reads as a wind-up before the wheel takes off, then decays into
+   a long deceleration.
+
+   It carries data-motion=essential so the reduced-motion rule below leaves it
+   alone. A blanket transition-duration override was collapsing the signature
+   interaction of the whole product into something nobody could see. Reduced
+   motion is honoured deliberately instead, further down. */
+@utility wheel-rotor {
+  transform-origin: 50% 50%;
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.12, -0.08, 0.02, 1);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* Dropdown menus grow out of their trigger on open and vanish on close, so a
+   dismissed menu never lingers over the page. Reduced motion collapses the
+   entrance through the blanket rule below. */
+@keyframes menu-in {
+  from { opacity: 0; transform: translateY(-4px) scale(0.97); }
+}
+
+.fd-menu[data-state="open"] {
+  transform-origin: var(--radix-dropdown-menu-content-transform-origin);
+  animation: menu-in 160ms var(--ease-out-soft);
+}
+
+/* ============================================================================
+   Collectible cards
+
+   A card is a physical object before it is a component: a portrait slab with
+   squared broadcast corners, an inset keyline like a printed trading card, and
+   a frame whose metal says what kind of card it is. Rarity is never carried by
+   colour alone. Every Hero and Icon also has a named badge, its own pitch
+   marking in the art, and a different frame material.
+   ========================================================================== */
+
+@keyframes card-in {
+  from { opacity: 0; transform: translate3d(0, 18px, 0) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes card-rise {
+  from { opacity: 0.25; transform: translate3d(0, 26px, 0); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes card-open {
+  from { opacity: 0; transform: perspective(900px) translate3d(0, 20px, 0) rotateY(-16deg) scale(0.94); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes fan-in {
+  from { opacity: 0; transform: translate3d(0, 46px, 0) rotate(0deg); }
+  to { opacity: 1; transform: translate3d(var(--fan-x, 0), var(--fan-y, 0), 0) rotate(var(--fan-r, 0deg)); }
+}
+
+@layer components {
+  .fd-card {
+    --frame-fill: linear-gradient(var(--color-line-strong), var(--color-line-strong));
+    --accent: var(--color-ink-soft);
+    --rating-ink: var(--color-ink);
+    --lift: 0px;
+    --rx: 0deg;
+    --ry: 0deg;
+    --mx: 50%;
+    --my: 28%;
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 5 / 7;
+    container-type: inline-size;
+    border-radius: 6px;
+    color: var(--color-ink);
+    text-align: left;
+    isolation: isolate;
+    transform: perspective(900px) translate3d(0, var(--lift), 0) rotateX(var(--rx)) rotateY(var(--ry));
+    transition:
+      transform 480ms var(--ease-out-expo),
+      box-shadow 480ms var(--ease-out-expo),
+      filter 200ms ease;
+    box-shadow: 0 22px 36px -28px rgb(0 0 0 / 0.95);
+  }
+
+  .fd-card[data-type="hero"] {
+    --frame-fill: linear-gradient(150deg, var(--color-hero-bright), var(--color-hero-deep) 30%, var(--color-hero) 52%, var(--color-hero-deep) 76%, var(--color-hero-bright));
+    --accent: var(--color-hero-bright);
+    --rating-ink: var(--color-hero-bright);
+  }
+  .fd-card[data-type="icon"] {
+    --frame-fill: linear-gradient(150deg, var(--color-icon-bright), var(--color-icon-deep) 28%, var(--color-icon) 50%, var(--color-icon-deep) 74%, var(--color-icon-bright));
+    --accent: var(--color-icon-bright);
+    --rating-ink: var(--color-icon-bright);
+  }
+  /* The gold light is earned, not ambient: it appears on the card you are
+     looking at (hover, focus, the showcase, an open card), so a page of Icons
+     does not become a page of glow. */
+  .fd-card[data-type="icon"]:is(:hover, :focus-visible),
+  .fd-fan__card .fd-card[data-type="icon"],
+  .fd-detail-card .fd-card[data-type="icon"] {
+    box-shadow:
+      0 22px 36px -28px rgb(0 0 0 / 0.95),
+      0 20px 46px -30px color-mix(in oklab, var(--color-icon) 55%, transparent);
+  }
+  /* A historical standard card gets an aged keyline, so a past season never
+     reads as a duplicate of a current player. */
+  .fd-card[data-era="legend"][data-type="standard"] {
+    --frame-fill: linear-gradient(160deg, color-mix(in oklab, var(--color-archive) 55%, var(--color-line-strong)), var(--color-line-strong) 45%, color-mix(in oklab, var(--color-archive) 40%, var(--color-line-strong)));
+    --accent: var(--color-archive);
+  }
+
+  .fd-card__frame {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border: 1.5px solid transparent;
+    border-radius: inherit;
+    background:
+      linear-gradient(180deg, var(--color-surface-3), var(--color-surface) 64%) padding-box,
+      var(--frame-fill) border-box;
+  }
+  .fd-card[data-type="icon"] .fd-card__frame { border-width: 2px; }
+
+  /* The printed keyline, inset like the white border of a real card. */
+  .fd-card__frame::after {
+    content: "";
+    position: absolute;
+    inset: 5px;
+    z-index: 3;
+    border: 1px solid color-mix(in oklab, var(--accent) 24%, transparent);
+    border-radius: 3px;
+    pointer-events: none;
+  }
+  .fd-card[data-type="icon"] .fd-card__frame::after {
+    border-color: color-mix(in oklab, var(--accent) 42%, transparent);
+    box-shadow: inset 0 0 0 3px color-mix(in oklab, var(--color-icon) 10%, transparent);
+  }
+
+  .fd-card__art {
+    position: absolute;
+    inset: 0 0 30% 0;
+  }
+  .fd-card__art svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .fd-card[data-era="legend"] .fd-card__art svg {
+    filter: saturate(0.7) sepia(0.2) contrast(1.06);
+  }
+  /* A scrim behind the rating corner so the numeral always reads over a kit. */
+  .fd-card__art::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: radial-gradient(70% 46% at 0% 0%, rgb(0 0 0 / 0.72), transparent 72%);
+    pointer-events: none;
+  }
+
+  /* The rating column sits on its own dark plate. The art behind it is a club
+     colour, and a white or yellow kit left the position and codes near 1:1. */
+  .fd-card__head {
+    position: absolute;
+    top: 5.5cqw;
+    left: 5.5cqw;
+    z-index: 2;
+    display: grid;
+    justify-items: center;
+    gap: 1.6cqw;
+    min-width: 21cqw;
+    padding: 2.2cqw 2cqw 2.6cqw;
+    border-radius: 3px;
+    background: linear-gradient(180deg, rgb(0 0 0 / 0.84), rgb(0 0 0 / 0.66));
+    box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--accent) 18%, transparent);
+  }
+  .fd-card__rating {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 17cqw, 62px);
+    line-height: 0.82;
+    font-variant-numeric: tabular-nums;
+    color: var(--rating-ink);
+    text-shadow: 0 2px 14px rgb(0 0 0 / 0.6);
+  }
+  .fd-card__pos,
+  .fd-card__code {
+    font-family: var(--font-condensed);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-shadow: 0 1px 8px rgb(0 0 0 / 0.7);
+  }
+  .fd-card__pos { font-size: clamp(12px, 5.6cqw, 19px); }
+  .fd-card__code { font-size: clamp(11px, 4.4cqw, 15px); color: var(--color-ink-soft); }
+  .fd-card__head-rule {
+    width: 100%;
+    height: 1px;
+    background: color-mix(in oklab, var(--accent) 55%, transparent);
+  }
+
+  .fd-card__marks {
+    position: absolute;
+    top: 7cqw;
+    right: 6.5cqw;
+    z-index: 2;
+    display: grid;
+    justify-items: end;
+    gap: 2cqw;
+  }
+  .fd-card__type {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.2cqw;
+    padding: 1.2cqw 2.6cqw 1.2cqw 2cqw;
+    border-radius: 3px;
+    /* A flat, light run of the metal. The frame's foil passes through dark
+       bands, and dark lettering crossing those fell below 4.5:1. */
+    background: linear-gradient(150deg, var(--color-icon-bright), var(--color-icon) 80%);
+    color: #120c02;
+    font-family: var(--font-condensed);
+    font-size: clamp(11px, 4.4cqw, 14px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    box-shadow: 0 6px 14px -8px rgb(0 0 0 / 0.9);
+  }
+  .fd-card[data-type="hero"] .fd-card__type {
+    background: linear-gradient(150deg, var(--color-hero-bright), var(--color-hero) 80%);
+    color: #0d1418;
+  }
+  .fd-card__type svg { width: clamp(11px, 4.6cqw, 15px); height: auto; }
+  .fd-card__season {
+    padding: 1.2cqw 2.2cqw;
+    border: 1px solid color-mix(in oklab, var(--accent) 60%, transparent);
+    border-radius: 3px;
+    background: rgb(0 0 0 / 0.66);
+    color: var(--color-ink);
+    font-family: var(--font-condensed);
+    font-size: clamp(12px, 5cqw, 17px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.05em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fd-card__body {
+    position: absolute;
+    inset: auto 0 0 0;
+    z-index: 2;
+    padding: 14cqw 7cqw 7.5cqw;
+    background: linear-gradient(180deg, transparent, color-mix(in oklab, var(--color-surface) 86%, transparent) 30%, var(--color-surface) 58%);
+  }
+  .fd-card__versions {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 0.8cqw;
+    margin-left: auto;
+    padding: 0.6cqw 1.6cqw;
+    border: 1px solid var(--color-line-strong);
+    border-radius: 3px;
+    color: var(--color-ink);
+    font-family: var(--font-condensed);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .fd-card__versions svg { width: clamp(11px, 4.2cqw, 14px); height: auto; }
+  .fd-card__name {
+    display: block;
+    overflow: hidden;
+    font-family: var(--font-condensed);
+    font-size: clamp(16px, 8.6cqw, 30px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .fd-card__sub {
+    display: flex;
+    align-items: center;
+    gap: 1.8cqw;
+    margin-top: 1.6cqw;
+    overflow: hidden;
+    color: var(--color-ink-soft);
+    font-size: clamp(11px, 4.4cqw, 14px);
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+  .fd-card__sub > span:first-child { overflow: hidden; text-overflow: ellipsis; }
+  .fd-card__rule {
+    display: block;
+    height: 1px;
+    margin: 3.4cqw 0 3cqw;
+    background: linear-gradient(90deg, color-mix(in oklab, var(--accent) 60%, transparent), transparent 85%);
+  }
+  .fd-card__stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2.2cqw 2cqw;
+  }
+  .fd-stat {
+    display: flex;
+    align-items: baseline;
+    gap: 1.4cqw;
+    min-width: 0;
+  }
+  .fd-stat__value {
+    font-family: var(--font-condensed);
+    font-size: clamp(15px, 6.6cqw, 23px);
+    font-weight: 700;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .fd-stat__label {
+    color: var(--color-ink-soft);
+    font-family: var(--font-condensed);
+    font-size: clamp(11px, 4cqw, 13px);
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.06em;
+  }
+
+  /* A second card edge behind the first: this footballer has other versions. */
+  .fd-card__stack {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border: 1px solid var(--color-line-strong);
+    border-radius: inherit;
+    background: linear-gradient(180deg, var(--color-surface-3), var(--color-surface-2));
+    transform: translate3d(4px, -5px, 0) rotate(2.4deg);
+    transition: transform 480ms var(--ease-out-expo);
+  }
+
+  .fd-card__shine {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    border-radius: inherit;
+    background: radial-gradient(circle at var(--mx) var(--my), rgb(255 255 255 / 0.2), transparent 44%);
+    mix-blend-mode: soft-light;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 360ms var(--ease-out-expo);
+  }
+  .fd-card[data-type="icon"] .fd-card__shine {
+    background:
+      radial-gradient(circle at var(--mx) var(--my), rgb(255 236 196 / 0.3), transparent 40%),
+      linear-gradient(118deg, transparent 30%, rgb(255 226 166 / 0.14) 46%, transparent 62%);
+    mix-blend-mode: screen;
+  }
+
+  .fd-card[data-interactive] { cursor: pointer; }
+  @media (hover: hover) and (pointer: fine) {
+    .fd-card[data-interactive]:hover {
+      --lift: -6px;
+      box-shadow: 0 34px 46px -30px rgb(0 0 0 / 1);
+    }
+    .fd-card[data-interactive][data-type="icon"]:hover {
+      box-shadow:
+        0 34px 46px -30px rgb(0 0 0 / 1),
+        0 24px 52px -30px color-mix(in oklab, var(--color-icon) 60%, transparent);
+    }
+    .fd-card[data-interactive]:hover .fd-card__shine { opacity: 1; }
+    .fd-card[data-interactive]:hover .fd-card__stack { transform: translate3d(7px, -9px, 0) rotate(4deg); }
+  }
+  .fd-card[data-interactive]:focus-visible {
+    --lift: -6px;
+    outline: 2px solid var(--color-home);
+    outline-offset: 4px;
+  }
+  .fd-card[data-interactive]:focus-visible .fd-card__shine { opacity: 1; }
+  .fd-card[data-interactive]:active { --lift: -2px; }
+
+  /* Reveals. Cards are visible by default; motion only adds the arrival. */
+  .fd-reveal {
+    animation: card-in 520ms var(--ease-out-expo) both;
+    animation-delay: calc(min(var(--i, 0), 11) * 34ms);
+  }
+  @supports (animation-timeline: view()) {
+    .fd-reveal-scroll {
+      animation: card-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 60%;
+    }
+  }
+
+  /* Opening a card in the detail view: it turns toward you as the sheet rises. */
+  .fd-detail-card {
+    animation: card-open 620ms var(--ease-out-expo) 60ms both;
+  }
+
+  .fd-fan__card {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: var(--fan-w, 12rem);
+    margin-left: calc(var(--fan-w, 12rem) / -2);
+    transform: translate3d(var(--fan-x, 0), var(--fan-y, 0), 0) rotate(var(--fan-r, 0deg));
+    transform-origin: 50% 100%;
+    animation: fan-in 900ms var(--ease-out-expo) both;
+    animation-delay: var(--fan-delay, 0ms);
+  }
+
+  /* List rows share the card's material so the picker and the collection
+     read as the same object at two sizes. */
+  .fd-row {
+    --accent: var(--color-line-strong);
+    --row-tint: transparent;
+  }
+  .fd-row[data-type="hero"] {
+    --accent: color-mix(in oklab, var(--color-hero) 62%, transparent);
+    --row-tint: color-mix(in oklab, var(--color-hero) 6%, transparent);
+  }
+  .fd-row[data-type="icon"] {
+    --accent: color-mix(in oklab, var(--color-icon) 62%, transparent);
+    --row-tint: color-mix(in oklab, var(--color-icon) 7%, transparent);
+  }
+  .fd-row[data-era="legend"][data-type="standard"] {
+    --accent: color-mix(in oklab, var(--color-archive) 45%, var(--color-line-strong));
+  }
+  .fd-row[data-era="legend"] .fd-row__art svg { filter: saturate(0.7) sepia(0.2) contrast(1.06); }
+}
+
+/* ============================================================================
+   The wheel
+
+   A physical object before it is a graphic: a lacquered graphite rotor with a
+   printed face, a foil rarity band and pegs at the rim, a flapper on a pivot
+   pin, and a hub marked as the centre spot. The light is fixed in the room —
+   sheen above, shadow on the floor, falloff away from the marker — so the
+   wheel turns under it instead of carrying its highlights round with it.
+
+   Motion is state, never ambience. There is no idle drift. The wheel draws
+   back when a hand is near it, gives under a press, smears at speed, ticks
+   as it slows, and settles with a single weighted lock.
+   ========================================================================== */
+
+@property --wheel-accent {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #c6ff3d;
+}
+
+@keyframes wheel-arrive {
+  from { transform: rotate(-34deg); }
+  to { transform: none; }
+}
+@keyframes wheel-thunk {
+  0% { transform: scale(1); }
+  26% { transform: scale(0.984); }
+  100% { transform: scale(1); }
+}
+/* Timed against the rotor's own curve: past 5% it is above ~100 wedges a
+   second, and it drops below ~12 a second after about 62%. */
+@keyframes wheel-faces {
+  0% { opacity: 1; }
+  5%, 30% { opacity: 0.16; }
+  62%, 100% { opacity: 1; }
+}
+@keyframes wheel-blur {
+  0% { opacity: 0; }
+  5%, 30% { opacity: 0.95; }
+  62%, 100% { opacity: 0; }
+}
+@keyframes wheel-lock-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+/* The draw arrives in order: state, name, detail, and the way forward last. */
+@keyframes hero-rise {
+  from { opacity: 0; transform: translate3d(0, 0.9rem, 0); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes hero-wipe {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+@layer components {
+  .fd-wheel {
+    container-type: inline-size;
+    isolation: isolate;
+    transition: --wheel-accent 700ms var(--ease-out-soft);
+  }
+
+  .fd-wheel__glow {
+    position: absolute;
+    inset: -20%;
+    z-index: -2;
+    border-radius: 50%;
+    background: radial-gradient(
+      closest-side,
+      color-mix(in oklab, var(--wheel-accent) 12%, transparent),
+      color-mix(in oklab, var(--wheel-accent) 4%, transparent) 58%,
+      transparent
+    );
+    opacity: 0.65;
+    transition: opacity 1100ms var(--ease-out-soft);
+    pointer-events: none;
+  }
+  .fd-wheel[data-armed] .fd-wheel__glow { opacity: 0.85; }
+  .fd-wheel:not([data-state="ready"]) .fd-wheel__glow { opacity: 1; }
+
+  /* The shadow the wheel throws on the floor: offset down, soft, never a halo. */
+  .fd-wheel__floor {
+    position: absolute;
+    inset: 16% 5% -9% 5%;
+    z-index: -1;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgb(0 0 0 / 0.78), rgb(0 0 0 / 0.4) 58%, transparent);
+    pointer-events: none;
+  }
+
+  .fd-wheel__body {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    box-shadow:
+      inset 0 0 0 1px rgb(255 255 255 / 0.06),
+      0 2.4cqi 5cqi -1.6cqi rgb(0 0 0 / 0.85);
+    transition: transform 900ms var(--ease-out-expo);
+  }
+  .fd-wheel[data-pressed] .fd-wheel__body {
+    transform: scale(0.976);
+    transition-duration: 170ms;
+    transition-timing-function: var(--ease-out-soft);
+  }
+  .fd-wheel[data-state="locked"] .fd-wheel__body {
+    animation: wheel-thunk 540ms var(--ease-out-soft);
+  }
+
+  /* The engine lands a wedge at the rotor's twelve o'clock. Turning the whole
+     assembly a quarter back puts that wedge at nine, under the marker. */
+  .fd-wheel__orient {
+    position: absolute;
+    inset: 0;
+    transform: rotate(-90deg);
+  }
+
+  /* Anticipation lives on its own layer so it can never touch the rotation
+     the engine asked for. */
+  .fd-wheel__cock {
+    position: absolute;
+    inset: 0;
+    transition: transform 850ms var(--ease-out-expo);
+    animation: wheel-arrive 1800ms var(--ease-out-expo) 120ms backwards;
+  }
+  .fd-wheel[data-armed] .fd-wheel__cock { transform: rotate(-2.6deg); }
+  .fd-wheel[data-state="spinning"] .fd-wheel__cock { transition-duration: 380ms; }
+
+  .fd-wheel__faces,
+  .fd-wheel__blur {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+  }
+  .fd-wheel__blur {
+    opacity: 0;
+    filter: blur(0.75cqi);
+    will-change: opacity;
+  }
+  .fd-wheel[data-state="spinning"] .fd-wheel__faces {
+    will-change: opacity;
+    animation: wheel-faces var(--spin-ms) linear both;
+  }
+  .fd-wheel[data-state="spinning"] .fd-wheel__blur {
+    animation: wheel-blur var(--spin-ms) linear both;
+  }
+
+  .fd-wheel__seg { transition: opacity 520ms var(--ease-out-soft); }
+  .fd-wheel__seg[data-dim] { opacity: 0.3; }
+
+  .fd-wheel__lock {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+    animation: wheel-lock-draw 760ms var(--ease-out-expo) 40ms both;
+  }
+
+  .fd-wheel__sheen,
+  .fd-wheel__shade,
+  .fd-wheel__spot {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .fd-wheel__sheen {
+    background:
+      radial-gradient(58% 46% at 34% 20%, rgb(255 255 255 / 0.075), transparent 72%),
+      radial-gradient(closest-side, transparent 93%, rgb(255 255 255 / 0.05) 98%, transparent);
+  }
+  /* Falloff away from the marker. The far side of the wheel, where labels
+     read upside down, sinks into the dark. */
+  .fd-wheel__shade {
+    background: radial-gradient(112% 100% at 0% 50%, transparent 36%, rgb(0 0 0 / 0.5) 70%, rgb(0 0 0 / 0.84));
+  }
+  .fd-wheel__spot {
+    background: radial-gradient(76% 58% at 0% 50%, transparent 34%, rgb(0 0 0 / 0.5) 88%);
+    opacity: 0;
+    transition: opacity 800ms var(--ease-out-soft);
+  }
+  .fd-wheel:is([data-state="locked"], [data-state="revealed"]) .fd-wheel__spot { opacity: 1; }
+
+  .fd-wheel__hub {
+    position: absolute;
+    left: 39.5%;
+    top: 39.5%;
+    width: 21%;
+    height: 21%;
+    filter: drop-shadow(0 0.9cqi 1.1cqi rgb(0 0 0 / 0.7));
+  }
+  .fd-wheel__hub-ring {
+    opacity: 0;
+    transition: opacity 600ms var(--ease-out-soft);
+  }
+  .fd-wheel:is([data-state="locked"], [data-state="revealed"]) .fd-wheel__hub-ring { opacity: 1; }
+
+  /* The flapper: a blade on a pivot pin, its tip resting against the pegs. */
+  .fd-wheel__marker {
+    position: absolute;
+    left: -12.6%;
+    top: 47%;
+    z-index: 3;
+    width: 16%;
+    height: 6%;
+    transform-origin: 15.625% 50%;
+    transition: transform 700ms var(--ease-out-expo);
+    filter: drop-shadow(0 0.55cqi 0.6cqi rgb(0 0 0 / 0.8));
+    pointer-events: none;
+  }
+  .fd-wheel[data-armed] .fd-wheel__marker { transform: rotate(-7deg); }
+  .fd-wheel:is([data-state="locked"], [data-state="revealed"]) .fd-wheel__marker { transform: translate3d(2.5%, 0, 0); }
+  .fd-wheel__flapper {
+    width: 100%;
+    height: 100%;
+    transform-origin: 15.625% 50%;
+    transition: transform 620ms var(--ease-out-expo);
+  }
+
+  /* ==========================================================================
+     Home hero
+
+     The first viewport is a corridor of football photographs rushing out of
+     the wheel, with the statement above it and the draw beneath.
+
+     The corridor's vanishing point is the wheel's centre: the cards are born
+     behind the wheel and sweep outward, so the wheel reads as the thing
+     dealing them. That fixes the composition. Near the axis the cards are
+     tiny and at the frame's edges they are enormous, which leaves the
+     top-centre and bottom-centre of the screen open — the statement goes in
+     one, the draw in the other, and the rails frame both.
+
+     Below the tablet breakpoint the wheel is too wide to see past, so the
+     corridor is anchored on the statement instead and the wheel sits under
+     it. The two anchors are two instances, switched by a media query, so
+     nothing has to be measured in JavaScript and nothing jumps on hydration.
+
+     Readability is handled by taking light away, not by adding panels: the
+     corridor dims to a suggestion the moment a draw starts, and the ground
+     colour fades in at the top and bottom edges and behind the statement.
+     ======================================================================== */
+
+  .fd-hero {
+    position: relative;
+    isolation: isolate;
+    /* Sits under the transparent sticky header, so the corridor reaches the
+       top edge of the page. */
+    margin-top: -4rem;
+    padding-top: 4rem;
+    /* clip, not hidden: an overflow-hidden box is a scroll container, and the
+       reveal's scrollIntoView would scroll the hero inside itself. */
+    overflow: hidden;
+    overflow: clip;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  /* The ground the corridor sits on. */
+  .fd-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -3;
+    pointer-events: none;
+    background: var(--background);
+  }
+
+  /* The corridor. Its box is centred on its anchor and spans the page, so the
+     cards keep their proportions whatever the anchor's own width is. */
+  .fd-hero__stream {
+    position: absolute;
+    z-index: -2;
+    left: 50%;
+    top: 50%;
+    width: 100vw;
+    height: 220svh;
+    translate: -50% -50%;
+    pointer-events: none;
+    /* The rails run off both edges of the frame. Feathering them keeps the
+       exit cards from reading as hard-cut rectangles — barely visible on the
+       dark ground, and the difference between cinema and a broken image on
+       the light one. */
+    mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+    transition: opacity 900ms var(--ease-out-soft);
+  }
+  .fd-hero__stream > * {
+    width: 100%;
+    height: 100%;
+  }
+  /* House lights down: once a draw is running the corridor drops back to a
+     suggestion of itself and the wheel is the brightest thing on screen. */
+  .fd-hero:not([data-phase="ready"]) .fd-hero__stream { opacity: 0.16; }
+
+  .fd-hero__stream[data-anchor="stage"] { display: none; }
+  /* The corridor only moves behind the wheel once there is room to see past
+     it: below this the wheel is most of the width, and the rails would run
+     out of frame behind it. */
+  @media (min-width: 1024px) {
+    .fd-hero__stream[data-anchor="intro"] { display: none; }
+    .fd-hero__stream[data-anchor="stage"] { display: block; }
+  }
+
+  /* Ground fading in at the top and bottom edges: the header keeps its
+     contrast, and the hero hands over to the page instead of being cut off. */
+  .fd-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      linear-gradient(180deg, var(--background), color-mix(in oklab, var(--background) 55%, transparent) 9%, transparent 22%),
+      linear-gradient(
+        0deg,
+        var(--background) 0%,
+        var(--background) 5%,
+        color-mix(in oklab, var(--background) 72%, transparent) 15%,
+        transparent 38%
+      );
+  }
+
+  .fd-hero__grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "intro" "lede" "cta" "stage" "console" "key";
+    justify-items: center;
+    max-width: 1240px;
+    margin-inline: auto;
+    /* The phone tab bar is fixed over the page, so the odds legend has to be
+       given room to sit above it rather than behind it. */
+    padding: 1.5rem 1rem calc(5.25rem + env(safe-area-inset-bottom));
+    text-align: center;
+  }
+
+  .fd-hero__intro { grid-area: intro; position: relative; }
+  .fd-hero__lede { grid-area: lede; }
+  .fd-hero__cta { grid-area: cta; }
+  .fd-hero__stage { grid-area: stage; position: relative; container-type: inline-size; width: 100%; }
+  .fd-hero__console {
+    grid-area: console;
+    container-type: inline-size;
+    width: 100%;
+    /* Clear the sticky header and the phone tab bar when the reveal scrolls
+       it into view. */
+    scroll-margin-top: 5rem;
+    scroll-margin-bottom: calc(5rem + env(safe-area-inset-bottom));
+  }
+  .fd-hero__key { grid-area: key; }
+
+  /* A pool of ground colour behind the statement, so the words sit in the
+     corridor's open centre rather than on top of a photograph. */
+  .fd-hero__intro::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: -55% -18%;
+    pointer-events: none;
+    /* farthest-side, so the ellipse covers the whole box: closest-side sized
+       the pool to half the width and left the statement's own corners sitting
+       on bare photograph. */
+    background: radial-gradient(
+      farthest-side at 50% 50%,
+      color-mix(in oklab, var(--background) 90%, transparent),
+      color-mix(in oklab, var(--background) 66%, transparent) 58%,
+      transparent
+    );
+  }
+
+  .fd-hero__kicker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    font-family: var(--font-condensed);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+  }
+  .fd-hero__kicker::before,
+  .fd-hero__kicker::after {
+    content: "";
+    width: clamp(1.25rem, 6vw, 3.5rem);
+    height: 1px;
+    background: var(--color-line-strong);
+  }
+
+  .fd-hero__title {
+    margin-top: 0.875rem;
+    font-size: clamp(3.25rem, min(15vw, 11svh), 8.25rem);
+    /* Anton's full stops sit on the baseline; any tighter and they touch the
+       caps of the line below. */
+    line-height: 0.88;
+    letter-spacing: -0.015em;
+    color: var(--color-ink);
+    text-wrap: balance;
+    /* Zero at rest: a transparent stroke is painted over the fill's own edge
+       and erodes it, which showed as soft caps beside the wheel's hard type. */
+    -webkit-text-stroke: 0 transparent;
+    transition:
+      color 700ms var(--ease-out-soft),
+      -webkit-text-stroke-color 700ms var(--ease-out-soft);
+  }
+  .fd-hero__title span { display: block; transition: inherit; }
+  .fd-hero__title span:last-child { color: var(--color-home); }
+  /* House lights down while a draw has the stage: the statement steps back so
+     the category name is the brightest thing on screen. On the dark ground it
+     becomes an outline; on the light one an outline at this size is a grey
+     hairline that reads as a rendering fault, so it stays filled and fades. */
+  .fd-hero:not([data-phase="ready"]) .fd-hero__title,
+  .fd-hero:not([data-phase="ready"]) .fd-hero__title span:last-child {
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--color-ink-muted);
+  }
+  :root:not(.dark) .fd-hero:not([data-phase="ready"]) .fd-hero__title,
+  :root:not(.dark) .fd-hero:not([data-phase="ready"]) .fd-hero__title span:last-child {
+    color: color-mix(in oklab, var(--color-ink) 20%, transparent);
+    -webkit-text-stroke-color: transparent;
+  }
+
+  .fd-hero__lede {
+    margin-top: 1.125rem;
+    max-width: 30ch;
+    font-family: var(--font-serif);
+    font-size: clamp(1.0625rem, 0.5vw + 0.95rem, 1.375rem);
+    line-height: 1.5;
+    text-wrap: balance;
+    color: var(--color-ink-soft);
+  }
+  .fd-hero__lede span { white-space: nowrap; }
+
+  .fd-hero__cta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.625rem;
+    margin-top: 1.5rem;
+  }
+
+  .fd-hero__wheel {
+    /* On a phone the statement, the wheel and the buttons share one screen:
+       the wheel takes what the height leaves, never less than 17.5rem so its
+       labels stay readable. */
+    --wheel-d: clamp(17.5rem, min(86cqi, 100svh - 31rem), 26rem);
+    position: relative;
+    width: var(--wheel-d);
+    margin-top: 1.25rem;
+    margin-inline: auto;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .fd-hero[data-phase="spinning"] .fd-hero__wheel,
+  .fd-hero[data-phase="locked"] .fd-hero__wheel { cursor: progress; }
+
+  /* Status line of the draw. */
+  .fd-hero__status {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    /* Tall enough for the rarity plate that joins it at the reveal, so the
+       name below never shifts. */
+    min-height: 1.75rem;
+    gap: 0.5rem 0.875rem;
+    font-family: var(--font-condensed);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+  }
+  .fd-hero__state {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-ink);
+  }
+  .fd-hero__console[data-phase="revealed"] .fd-hero__state { color: var(--color-home); }
+  .fd-hero__rarity {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.2rem 0.55rem 0.2rem 0.45rem;
+    border: 1px solid var(--color-line-strong);
+    border-radius: 2px;
+    color: var(--rarity-ink, var(--color-ink-soft));
+  }
+  /* The locked category carries the same metal as its band on the wheel, set
+     like the type plate on an Icon card: a flat run of foil, dark lettering. */
+  .fd-hero__rarity[data-rarity="legendary"] {
+    border-color: transparent;
+    background: linear-gradient(150deg, var(--color-icon-bright), var(--color-icon) 80%);
+    color: #120c02;
+  }
+  .fd-hero__rarity[data-rarity="legendary"] svg path { fill: currentColor; }
+  .fd-hero__rarity[data-rarity="rare"] {
+    border-color: var(--color-away-deep);
+    background: color-mix(in oklab, var(--color-away) 10%, transparent);
+  }
+  .fd-hero__seed {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-transform: none;
+    color: var(--color-ink-muted);
+  }
+  .fd-hero__seed b { font-weight: 600; color: var(--color-ink-soft); }
+
+  /* The category name. Sized to fit its own length on one line, so the draw
+     never reflows the column when it lands. */
+  .fd-hero__name {
+    display: block;
+    margin-top: 0.75rem;
+    overflow: hidden;
+    font-family: var(--font-display);
+    font-size: min(4.5rem, calc(100cqi / (var(--chars, 17) * 0.5)));
+    font-weight: 400;
+    line-height: 0.92;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--color-ink);
+  }
+  .fd-hero__name[data-live] { color: var(--color-ink-soft); }
+  h2.fd-hero__name { color: var(--name-ink, var(--color-ink)); }
+
+  .fd-hero__brief {
+    margin-top: 0.75rem;
+    margin-inline: auto;
+    max-width: 46ch;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--color-ink-soft);
+  }
+  .fd-hero__facts {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 1.5rem;
+    margin-top: 0.875rem;
+    font-size: 0.8125rem;
+    color: var(--color-ink-soft);
+  }
+  .fd-hero__facts dt {
+    display: inline;
+    margin-right: 0.45rem;
+    font-family: var(--font-condensed);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+  }
+  .fd-hero__facts dd { display: inline; }
+  .fd-hero__facts .tnum { font-family: var(--font-mono); color: var(--color-ink); }
+
+  .fd-hero__enter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    height: 3.5rem;
+    margin-top: 1.25rem;
+    padding-inline: 2rem;
+    border-radius: var(--radius-md);
+    background: var(--primary);
+    color: var(--primary-foreground);
+    font-family: var(--font-condensed);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    box-shadow: var(--shadow-md);
+    transition: background-color 150ms ease, transform 150ms ease;
+  }
+  .fd-hero__enter:hover { background: color-mix(in oklab, var(--primary) 88%, white); }
+  .fd-hero__enter:active { transform: scale(0.98); }
+
+  /* Rarity odds: the legend for the wheel's marks, and the chance of each. */
+  .fd-hero__key {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.625rem 1.125rem;
+    width: 100%;
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-line);
+  }
+  .fd-hero__key > div { display: flex; align-items: baseline; gap: 0.5rem; }
+  .fd-hero__key dt {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-condensed);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+  }
+  .fd-hero__key dd {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-ink);
+  }
+
+  .fd-hero__draw > * { animation: hero-rise 560ms var(--ease-out-expo) both; }
+  .fd-hero__draw > .fd-hero__status { animation: hero-wipe 520ms var(--ease-out-expo) both; }
+  /* The name seated when the wheel locked; it does not arrive a second time. */
+  .fd-hero__draw > h2.fd-hero__name { animation: none; }
+  .fd-hero__console[data-phase="revealed"] .fd-hero__detail { animation-delay: 140ms; }
+  .fd-hero__enter { animation: hero-rise 620ms var(--ease-out-expo) 420ms both; }
+
+  @media (min-width: 640px) {
+    .fd-hero__grid { padding-inline: 1.5rem; }
+  }
+
+  /* No tab bar from here up. */
+  @media (min-width: 1024px) {
+    .fd-hero__grid { padding-bottom: 1.5rem; }
+  }
+
+  /* Tablet: one centred column still, with room for a larger wheel under the
+     statement the corridor runs behind. */
+  @media (min-width: 768px) {
+    .fd-hero__grid { padding-block: 2rem 3rem; }
+    .fd-hero__wheel { --wheel-d: clamp(20rem, min(58cqi, 100svh - 33rem), 30rem); }
+    .fd-hero__brief { max-width: 52ch; }
+  }
+
+  /* Desktop: the draw takes the open ground to the left of the wheel, which
+     is where the marker is pointing. It is laid out of flow, so the wheel —
+     and with it the corridor's vanishing point — cannot move when a draw
+     lands. */
+  @media (min-width: 1024px) {
+    .fd-hero__grid {
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      grid-template-areas:
+        "intro   intro intro"
+        "lede    lede  lede"
+        "cta     cta   cta"
+        "console stage ."
+        "key     key   key";
+      column-gap: 2.5rem;
+      min-height: calc(min(100svh, 60rem) - 4rem);
+      padding-inline: 2rem;
+      padding-block: 1.75rem 2rem;
+    }
+    .fd-hero__intro,
+    .fd-hero__lede,
+    .fd-hero__cta,
+    .fd-hero__key { grid-column: 1 / -1; }
+    /* The stage stops being a query container here, and that is load-bearing:
+       inline-size containment makes this auto track resolve to zero width, so
+       the corridor (left: 50% of the stage) would converge half a wheel to the
+       left of the hub it is supposed to come out of. The desktop wheel is
+       sized from svh, not cqi, so nothing needs the container. */
+    .fd-hero__stage { width: auto; container-type: normal; }
+    /* Sized so the whole hero — statement, buttons, wheel and the odds legend
+       that decodes the wheel's marks — clears a 900px laptop screen. */
+    .fd-hero__wheel { --wheel-d: clamp(18rem, calc(100svh - 34.5rem), 29rem); margin-top: 0.75rem; }
+
+    /* Two lines on a wide screen: the statement still fills the top of the
+       frame, and the wheel keeps the height it needs to be playable. */
+    .fd-hero__title { font-size: clamp(4rem, min(9vw, 11.5svh), 8.25rem); }
+    .fd-hero__title span:first-child,
+    .fd-hero__title span:nth-child(2) { display: inline; }
+
+    .fd-hero__console {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: center;
+      text-align: left;
+      pointer-events: none;
+    }
+    .fd-hero__console > * { pointer-events: auto; }
+    .fd-hero__draw { width: 100%; max-width: 26rem; }
+    .fd-hero__status { justify-content: flex-start; }
+    .fd-hero__brief,
+    .fd-hero__facts { margin-inline: 0; justify-content: flex-start; }
+    .fd-hero__key { justify-content: space-between; flex-wrap: nowrap; gap: 0.75rem; }
+    .fd-hero__key > div { gap: 0.375rem; white-space: nowrap; }
+    .fd-hero__key dt { font-size: 0.6875rem; letter-spacing: 0.08em; }
+  }
+}
+
+/* ============================================================================
+   Accessibility — motion
+
+   Non-essential motion collapses. Anything marked data-motion=essential keeps
+   its own timing and defines its own reduced-motion behaviour, because
+   silently zeroing it out breaks the interaction rather than calming it.
+   ========================================================================== */
+
+/* The footer's columns reveal through framer-motion's inline styles. Without
+   script that reveal never runs, so they start, and stay, at rest. */
+@media (scripting: none) {
+  .fd-footer-reveal { opacity: 1 !important; transform: none !important; filter: none !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  /* At rest from the first paint rather than waiting to be scrolled to. */
+  .fd-footer-reveal { opacity: 1 !important; transform: none !important; filter: none !important; }
+
+  *:not([data-motion="essential"]):not([data-motion="essential"] *),
+  *:not([data-motion="essential"]):not([data-motion="essential"] *)::before,
+  *:not([data-motion="essential"]):not([data-motion="essential"] *)::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* The wheel still moves, but on a plain decelerating curve with no wind-up. */
+  [data-motion="essential"].wheel-rotor {
+    transition-timing-function: var(--ease-out-soft);
+  }
+
+  /* The corridor is frozen mid-flight rather than removed, so the hero is
+     still a wall of football. It carries data-motion=essential, which exempts
+     it from the blanket rule, so its own fade is cut here instead: the house
+     lights simply go down when a draw starts. */
+  .fd-hero__stream { transition-duration: 0.01ms !important; }
+
+  /* Scroll-driven reveals ignore duration, so they are switched off outright,
+     and cards never tilt. State changes (lift on focus, selection) still show. */
+  .fd-reveal-scroll { animation: none !important; }
+  /* The blanket rule only shortens duration; a stagger delay with fill-mode
+     both would still hold each card invisible for its delay. */
+  .fd-reveal,
+  .fd-fan__card,
+  .fd-detail-card { animation: none !important; }
+  .fd-card { --rx: 0deg !important; --ry: 0deg !important; }
+
+  /* The wheel keeps its short spin, its lock highlight and its reveal; what
+     goes is the wind-up, the press, the arrival, the speed blur and the
+     drawn-in lock outline. Its rotor is essential, so everything inside it is
+     exempt from the blanket rule above and has to be switched off here. */
+  .fd-wheel__cock,
+  .fd-wheel__faces,
+  .fd-wheel__blur,
+  .fd-wheel__lock,
+  .fd-wheel[data-state="locked"] .fd-wheel__body,
+  .fd-hero__draw > *,
+  .fd-hero__enter { animation: none !important; }
+  .fd-wheel[data-armed] .fd-wheel__cock,
+  .fd-wheel[data-pressed] .fd-wheel__body,
+  .fd-wheel[data-armed] .fd-wheel__marker { transform: none; }
+}

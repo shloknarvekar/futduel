@@ -1,0 +1,17 @@
+node_modules
+.next
+out
+.env
+.env.local
+.env*.local
+*.tsbuildinfo
+.DS_Store
+npm-debug.log*
+
+# Vercel CLI project link
+.vercel
+
+# Not part of the site: launch-video renders, raw source photos, design-tool files
+brag-output*/
+Football/
+.impeccable/
