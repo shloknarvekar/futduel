@@ -11,10 +11,12 @@ npm-debug.log*
 # Vercel CLI project link
 .vercel
 
-# Not part of the site: launch-video renders, raw source photos, design-tool files
-brag-output*/
-Football/
-.impeccable/
+# Not part of the site: launch-video renders, raw source photos, design-tool
+# files. Anchored to the root: git on Windows ignores case, so a bare
+# "Football/" also swallowed lib/football and components/football.
+/brag-output*/
+/Football/
+/.impeccable/
 
 # Every env file stays local (the Vercel CLI keeps a token in .env.local),
 # except the documented template.
